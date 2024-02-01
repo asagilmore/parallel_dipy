@@ -1,4 +1,5 @@
-# Create a new environment
+# Assuming that Miniconda is installed in the home directory
+source ~/miniconda3/bin/activate
 conda create -n dipy python=3.11
 conda init bash
 conda activate dipy
