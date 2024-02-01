@@ -26,6 +26,12 @@ export PATH=~/miniconda3/bin:$PATH
 # Verify that conda is in the PATH
 which conda
 
+# install ipykernel
+conda install -n dipy ipykernel
+
+# Create kernel for dipy env
+python -m ipykernel install --prefix=/home/ubuntu/miniconda3/envs/dipy --name=dipy
+
 # Install mamba
 conda install -n dipy -c conda-forge mamba
 
