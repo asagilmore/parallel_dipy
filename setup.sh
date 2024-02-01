@@ -1,7 +1,7 @@
 # Assuming that Miniconda is installed in the home directory
 source ~/miniconda3/bin/activate
-conda create -n dipy python=3.11
 conda init bash
+conda create -n dipy python=3.11
 conda activate dipy
 
 # Install the required packages
@@ -18,5 +18,16 @@ cd ~
 pip install dask joblib ray matplotlib
 
 # setup Jupyter hub
-curl -L https://tljh.jupyter.org/bootstrap.py | sudo -E python3 - --admin asagilmore
+sudo apt install python3 python3-dev git curl
+conda install -n dipy -c conda-forge mamba
+# Add the path to the conda executable to the PATH environment variable
+export PATH=~/miniconda3/bin:$PATH
 
+# Verify that conda is in the PATH
+which conda
+
+# Install mamba
+conda install -n dipy -c conda-forge mamba
+
+# Run the tljh installation script
+curl -L https://tljh.jupyter.org/bootstrap.py | sudo -E python3 - --admin asagilmore
