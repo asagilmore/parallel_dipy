@@ -10,6 +10,9 @@ rm -rf ~/miniconda3/miniconda.sh
 
 ~/miniconda3/bin/conda init bash
 
+# Source the bashrc file to apply the changes immediately
+source ~/.bashrc
+
 # Create a new environment
 conda create -n dipy python=3.11
 conda activate dipy
