@@ -67,8 +67,7 @@ def run_csdm(engine, num_chunks,save = True):
     chunk_size = non_zero_count // total_chunks
     vox_per_chunk = int(chunk_size)
 
-    # get process pid
-    process = psutil.Process(os.getpid())
+    print("running with, engine: ", engine, " vox_per_chunk: ", vox_per_chunk, " num_chunks: ",num_chunks)
 
     start = time.time()
     csdm.fit(data, mask=brain_mask_data, engine=engine, vox_per_chunk=vox_per_chunk)
@@ -81,7 +80,7 @@ def run_csdm(engine, num_chunks,save = True):
     else:
         print("save turned off, runTime not saved")
 
-    print("engine: ", engine, " vox_per_chunk: ", vox_per_chunk, " num_chunks: ",num_chunks, " time: ", runTime)
+    print("time: ", runTime)
 
     return runTime
 
