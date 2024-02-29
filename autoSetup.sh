@@ -17,9 +17,9 @@ pip install .
 # Install other packages
 cd ~
 pip install dask joblib ray matplotlib boto3 numpy
-
+pip install scikit-image
 ## get code
 
 cd ~
 cd parallel_dipy
-python3 automaticMeasurment.py
+conda activate dipy
