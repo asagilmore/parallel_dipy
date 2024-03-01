@@ -56,8 +56,7 @@ def run_fit(model, engine, data, brain_mask_data, num_chunks, save = True):
 
     ## calc approx vox_per_chunk from num_chunks
     non_zero_count = np.count_nonzero(brain_mask_data)
-    total_chunks = num_chunks
-    chunk_size = non_zero_count // total_chunks
+    chunk_size = non_zero_count // num_chunks
     vox_per_chunk = int(chunk_size)
 
     print("running with, engine: ", engine, " vox_per_chunk: ", vox_per_chunk, " num_chunks: ",num_chunks)
@@ -121,7 +120,7 @@ for i in range(1,3):
     models = [csdm, fwdtim]
     for model in models:
         for x in range(0,14):
-            num_chunks = 2^x
+            num_chunks = 2**x
             for i in range(5):
                 run_fit(model,"ray",data,brain_mask_data, num_chunks)
-                save_data('autoMeasurementData.csv')
+                save_data('feb29.csv')
