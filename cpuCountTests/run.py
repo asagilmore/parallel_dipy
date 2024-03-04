@@ -10,7 +10,6 @@ from dipy.reconst.csdeconv import (auto_response_ssst,
                                    mask_for_response_ssst,
                                    response_from_mask_ssst)
 from dipy.align import resample
-import numpy as np
 import multiprocessing
 import psutil
 import csv
@@ -59,14 +58,14 @@ def run_fit(model, engine, data, brain_mask_data, num_chunks, save = True):
     chunk_size = non_zero_count // num_chunks
     vox_per_chunk = int(chunk_size)
 
-    print("running with, engine: ", engine, " vox_per_chunk: ", vox_per_chunk, " num_chunks: ",num_chunks)
+    print("running with, engine: ", engine, " vox_per_chunk: ", vox_per_chunk, " num_chunks: ", num_chunks)
 
     ## start tracking memory useage
     monitor_thread = threading.Thread(target=monitor.monitor_memory)
     monitor_thread.start()
 
     start = time.time()
-    model.fit(data, mask=brain_mask_data, engine=engine, vox_per_chunk=vox_per_chunk)
+    fit = model.fit(data, mask=brain_mask_data, engine=engine, vox_per_chunk=vox_per_chunk)
     end = time.time()
 
     #Stop tracking memeory
@@ -81,8 +80,8 @@ def run_fit(model, engine, data, brain_mask_data, num_chunks, save = True):
     model_name = model.__class__.__name__
 
     if (save):
-        runTimeData.append({'engine':engine,'vox_per_chunk':vox_per_chunk,'num_chunks':num_chunks,
-        'time':runTime, 'cpu_count':cpu_count, 'memory_size':memory_size, 'num_vox':non_zero_count,
+        runTimeData.append({'engine': engine, 'vox_per_chunk': vox_per_chunk, 'num_chunks': num_chunks,
+        'time':runTime, 'cpu_count' : cpu_count, 'memory_size': memory_size, 'num_vox': non_zero_count,
         'avg_mem': average_memory_usage, 'mem_useage': memory_usage, 'model':model_name,
         'data_shape':data.shape})
     else:
@@ -113,14 +112,19 @@ def save_data(filename):
     runTimeData.clear()
 
 
-for i in range(1,3):
-    gtab,response,brain_mask_data,data = getScaledData(i)
+for i in range(1, 4):
+    gtab, response, brain_mask_data, data = getScaledData(i)
     csdm = csd.ConstrainedSphericalDeconvModel(gtab, response=response)
     fwdtim = fwdti.FreeWaterTensorModel(gtab)
     models = [csdm, fwdtim]
+
     for model in models:
-        for x in range(0,14):
+        for x in range(1, 16):
             num_chunks = 2**x
+            if x == 0:
+                for i in range(5):
+                    run_fit(model, "serial", data, brain_mask_data, num_chunks)
+                    save_data('feb29.csv')
             for i in range(5):
-                run_fit(model,"ray",data,brain_mask_data, num_chunks)
+                run_fit(model, "ray", data, brain_mask_data, num_chunks)
                 save_data('feb29.csv')

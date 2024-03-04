@@ -40,7 +40,7 @@ def getScaledData(voxScale=1):
     data = dwi_img.get_fdata()
 
     if(voxScale != 1):
-        data = downscale_local_mean(array, (voxScale, voxScale, voxScale, 1))
+        data = downscale_local_mean(data, (voxScale, voxScale, voxScale, 1))
 
 
     seg_img = nib.load(op.join(
