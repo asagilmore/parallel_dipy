@@ -121,10 +121,14 @@ for i in range(1, 4):
     for model in models:
         for x in range(1, 16):
             num_chunks = 2**x
-            if x == 0:
+            print(np.prod(data.shape[:3]))
+            print(num_chunks)
+            if (np.prod(data.shape[:3]) > num_chunks):
+                if x == 0:
+                    for i in range(5):
+                        run_fit(model, "serial", data, brain_mask_data,
+                            num_chunks)
+                        save_data('feb29.csv')
                 for i in range(5):
-                    run_fit(model, "serial", data, brain_mask_data, num_chunks)
+                    run_fit(model, "ray", data, brain_mask_data, num_chunks)
                     save_data('feb29.csv')
-            for i in range(5):
-                run_fit(model, "ray", data, brain_mask_data, num_chunks)
-                save_data('feb29.csv')
