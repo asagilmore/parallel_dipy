@@ -8,17 +8,6 @@ from dipy.reconst.csdeconv import (auto_response_ssst,
                                    mask_for_response_ssst,
                                    response_from_mask_ssst)
 from dipy.align import resample
-import numpy as np
-import multiprocessing
-import psutil
-import csv
-import os
-import numpy as np
-import psutil
-import time
-import threading
-from skimage.transform import downscale_local_mean
-
 
 def getScaledData(voxScale=1):
 
@@ -37,9 +26,10 @@ def getScaledData(voxScale=1):
 
     ## load data
     dwi_img = nib.load(subject_files[0])
+    ## TODO: resample dwi_image (use nilearn.image.resample_img)
     data = dwi_img.get_fdata()
 
-    if(voxScale != 1):
+    if( voxScale != 1):
         data = downscale_local_mean(data, (voxScale, voxScale, voxScale, 1))
 
 
